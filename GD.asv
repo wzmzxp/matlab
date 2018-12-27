@@ -1,19 +1,23 @@
-function z=GD(u,fun,d)
-    syms u1 u2 u3 u4 u5 u6                                 % 通过符号变量将匿名函数转换为符号函数
+function y=GD(f,d,para)
     str=[u1,u2,u3,u4,u5,u6];
-    y = fun(str(1:d));
+    z=fun(f,d)
+    y=[]
     for i=1:d
-        z(i)
+             subs(z(i),str(1:d))
+%          f1=matlabFunction(z(i));
+         y(i)=f1(para(i));
     end
-    if d==1
-        y = fun([u1])
-        z = matlabFunction(diff(y,u1))
-    end
-    if d==2
-        y = fun([u1,u2])
-        z(1) = matlabFunction(diff(y,u1))
+   
+end
+
+function z=fun(f,d,para)
+    syms u1 u2 u3 u4 u5 u6                               
+    str=[u1,u2,u3,u4,u5,u6];
+    y = f(str(1:d));
+    syms z1 
+    z=[z1]
+    for i=1:d
+        z(i)=diff(y,str(i))
         
     end
-    
-    
 end
