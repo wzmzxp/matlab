@@ -1,16 +1,27 @@
-function y=GD(f,d,para)
-    str=[u1,u2,u3,u4,u5,u6];
-    z=fun(f,d)
-    y=[]
-    for i=1:d
-             subs(z(i),str(1:d))
-%          f1=matlabFunction(z(i));
-         y(i)=f1(para(i));
-    end
-   
+function paras=GD1(f,d,para)
+    y=GD(f,d,para);
+    grad=-1*y;
+    alfa=0.01;
+    precision=0.01;
+    inif=f(para);
+    while 
 end
 
-function z=fun(f,d,para)
+function y=GD(f,d,para)
+    [z,str]=fun(f,d)
+    y=[];
+    
+    
+    for i=1:d
+         y(i)= double(subs(z(i),str(1:d),para(1:d)))
+    end
+    
+    
+    
+    
+end
+
+function [z,str]=fun(f,d)
     syms u1 u2 u3 u4 u5 u6                               
     str=[u1,u2,u3,u4,u5,u6];
     y = f(str(1:d));

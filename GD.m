@@ -1,6 +1,22 @@
-function y=GD(f,d,para)
+function para=GD(f,d,para)
+    y=GD1(f,d,para);
+    grad=-1*y;
+    alfa=0.01;
+    precision=0.000001;
+    inif=f(para);
+    next=100000;
+    while inif-next>precision
+        inif=f(para);
+        for i=1:d
+            para(i)=para(i)+alfa*grad(i)
+        end
+        next=f(para);
+    end
+end
+
+function y=GD1(f,d,para)
     [z,str]=fun(f,d)
-    y=[];
+    y=[];  
     for i=1:d
          y(i)= double(subs(z(i),str(1:d),para(1:d)))
     end
