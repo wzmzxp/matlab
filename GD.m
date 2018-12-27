@@ -7,8 +7,4 @@ function z=GD(fun,d)
     for i=1:d
         z(i)=diff(y,str(i))
     end
-
-
-    
-    
 end
