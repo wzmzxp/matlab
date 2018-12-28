@@ -1,10 +1,10 @@
 function para=GD(f,d,para)
     y=GD1(f,d,para);
     grad=-1*y;
-    alfa=0.01;
-    precision=0.000001;
+    alfa=0.1;
+    precision=0.001;
     inif=f(para);
-    next=100000;
+    next=inif-0.1;
     while inif-next>precision
         inif=f(para);
         for i=1:d
