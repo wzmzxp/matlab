@@ -1,5 +1,7 @@
-function [best,fmin,N_iter]=bat_algorithm(para)
 
+
+function [best,fmin,N_iter]=bat_algorithm(para)
+clear all
 % Default parameters
 if nargin<1, para=[10 0.25 0.5]; end
 n=para(1);      % Population size, typically 10 to 25
@@ -27,21 +29,25 @@ end
 best=Sol(I,:);
 %记录是否进入局部最优解
 tag=0;
-%flag>=3结束程序；表明多次
-flag=0;
+%flag>=3结束程序；表明多次收敛到的局部最优为全局最优
+flag=[];
+distance=0;
 % Start the iterations -- Bat Algorithm
 while (1)
     % Loop over all bats/solutions
+%     if flag>3
+%         break;
+%     end
     lastFmin=fmin;
     lastbestIndex=I;
-    
+    a=1;
     for i=1:n
         Q(i)=Qmin+(Qmin-Qmax)*rand;
         v(i,:)=v(i,:)+(Sol(i,:)-best)*Q(i);
-        S(i,:)=Sol(i,:)+v(i,:);
+        S(i,:)=Sol(i,:)+a*v(i,:);
         % Pulse rate
         if rand>r
-            S(i,:)=best+0.01*randn(1,d);
+            S(i,:)=best+0.001*randn(1,d);
         end
         % Evaluate new solutions
         Fnew=Fun(S(i,:),typ);
@@ -55,34 +61,46 @@ while (1)
             best=S(i,:);
             fmin=Fnew;
             I=i;
+%             best；
         end
     end
     N_iter=N_iter+n;
     
     if abs(lastFmin-fmin)<0.001
         tag=tag+1;
-        if tag>200
+        if tag>300
+            disp(['抖动 = ',num2str(fmin)]);
+            %             flag=flag+1;
             tag=0;
             Sol(1,:)=Sol(I,:);
+%             a=exp(a);
+            I=1;
+%             best= Sol(1,:);
             for i=2:n
                 Sol(i,:)=randn(1,d);
+                
+            end
+            distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
+            if distance<tol
+                break;
             end
             continue;
         end
     end
     %循环截止条件
     
-     if (lastbestIndex~=I)
-         distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
-         if distance<tol
-             break;
-         end
-          
-    end
+%      if (lastbestIndex~=I)
+%          distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
+%          if distance<tol
+%              break;
+%          end
+%           
+%     end
 end
 % Output/display
 disp(['Number of evaluations: ',num2str(N_iter)]);
 disp(['Best = ',num2str(best),' fmin = ',num2str(fmin)]);
+disp(['distance = ',num2str(distance)]);
 % Objective function -- Rosenbrock's 3D function
 
 %梯度下降

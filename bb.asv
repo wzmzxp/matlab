@@ -1,6 +1,6 @@
 
 
-function [best,fmin,N_iter]=bat_algorithm(para)
+function [best,fmin,N_iter]=bb(para)
 clear all
 % Default parameters
 if nargin<1, para=[10 0.25 0.5]; end
@@ -40,14 +40,14 @@ while (1)
 %     end
     lastFmin=fmin;
     lastbestIndex=I;
-    a=1;
+    
     for i=1:n
         Q(i)=Qmin+(Qmin-Qmax)*rand;
         v(i,:)=v(i,:)+(Sol(i,:)-best)*Q(i);
         S(i,:)=Sol(i,:)+v(i,:);
         % Pulse rate
         if rand>r
-            S(i,:)=best+0.001*randn(1,d);
+            S(i,:)=best+0.1*randn(1,d);
         end
         % Evaluate new solutions
         Fnew=Fun(S(i,:),typ);
@@ -68,22 +68,13 @@ while (1)
     
     if abs(lastFmin-fmin)<0.001
         tag=tag+1;
-        if tag>300
+        if tag>200
             disp(['¶¶¶¯ = ',num2str(fmin)]);
             %             flag=flag+1;
             tag=0;
             Sol(1,:)=Sol(I,:);
-            if tag/2==0
-                a=exp(i);
-            else
-                a=1;
-            end
-%             a=exp(a);
-            I=1;
-%             best= Sol(1,:);
             for i=2:n
                 Sol(i,:)=randn(1,d);
-                
             end
             distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
             if distance<tol
