@@ -1,5 +1,7 @@
-function [best,fmin,N_iter]=bat_algorithm(para)
 
+
+function [best,fmin,N_iter]=bat_algorithm(para)
+clear all
 % Default parameters
 if nargin<1, para=[10 0.25 0.5]; end
 n=para(1);      % Population size, typically 10 to 25
@@ -59,7 +61,7 @@ while (1)
             best=S(i,:);
             fmin=Fnew;
             I=i;
-            best
+%             best；
         end
     end
     N_iter=N_iter+n;
@@ -67,24 +69,29 @@ while (1)
     if abs(lastFmin-fmin)<0.001
         tag=tag+1;
         if tag>200
-%             flag=flag+1;
+            disp(['抖动 = ',num2str(fmin)]);
+            %             flag=flag+1;
             tag=0;
             Sol(1,:)=Sol(I,:);
             for i=2:n
                 Sol(i,:)=randn(1,d);
+            end
+            distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
+            if distance<tol
+                break;
             end
             continue;
         end
     end
     %循环截止条件
     
-     if (lastbestIndex~=I)
-         distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
-         if distance<tol
-             break;
-         end
-          
-    end
+%      if (lastbestIndex~=I)
+%          distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
+%          if distance<tol
+%              break;
+%          end
+%           
+%     end
 end
 % Output/display
 disp(['Number of evaluations: ',num2str(N_iter)]);
