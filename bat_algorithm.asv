@@ -27,15 +27,11 @@ end
 best=Sol(I,:);
 %记录是否进入局部最优解
 tag=0;
-%flag>=3结束程序；表明多次收敛到的局部最优为全局最优
+%flag>=3结束程序；表明多次
 flag=0;
-distance=0;
 % Start the iterations -- Bat Algorithm
 while (1)
     % Loop over all bats/solutions
-%     if flag>3
-%         break;
-%     end
     lastFmin=fmin;
     lastbestIndex=I;
     
@@ -59,7 +55,6 @@ while (1)
             best=S(i,:);
             fmin=Fnew;
             I=i;
-            best
         end
     end
     N_iter=N_iter+n;
@@ -67,7 +62,6 @@ while (1)
     if abs(lastFmin-fmin)<0.001
         tag=tag+1;
         if tag>200
-%             flag=flag+1;
             tag=0;
             Sol(1,:)=Sol(I,:);
             for i=2:n
@@ -89,7 +83,6 @@ end
 % Output/display
 disp(['Number of evaluations: ',num2str(N_iter)]);
 disp(['Best = ',num2str(best),' fmin = ',num2str(fmin)]);
-disp(['distance = ',num2str(distance)]);
 % Objective function -- Rosenbrock's 3D function
 
 %梯度下降
