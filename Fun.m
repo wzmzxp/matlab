@@ -25,4 +25,31 @@ if typ==2
     z = term1 + term2 + term3 + term4 + term5;
 
 end
+if typ==3
+    %Cross-in-Tray Function
+    %-2.06261 (1.3491,1.3491) (1.3491,-1.3491) (-1.3491,1.3491) (-1.3491,-1.3491)
+    %(-10,10)
+    x1 = u(1);
+    x2 = u(2);
+    
+    fact1 = sin(x1)*sin(x2);
+    fact2 = exp(abs(100 - sqrt(x1^2+x2^2)/pi));
+    
+    z = -0.0001 * (abs(fact1*fact2)+1)^0.1;
+    
+end
+if typ==4
+    %Drop-Wave Function -1 (0,0)
+    %left=-5.12; right=5.12;
+
+    x1 = u(1);
+    x2 = u(2);
+    
+    
+    frac1 = 1 + cos(12*sqrt(x1^2+x2^2));
+    frac2 = 0.5*(x1^2+x2^2) + 2;
+    
+    z = -frac1/frac2;
+end
+
 end

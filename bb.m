@@ -2,6 +2,7 @@ function [best,fmin,N_iter]=bat_algorithm(para)
 % Default parameters
 clear all
 if nargin<1, para=[10 0.25 0.5]; end
+typ=3;
 n=para(1);      % Population size, typically 10 to 25
 A=para(2);      % Loudness (constant or decreasing)
 r=para(3);      % Pulse rate (constant or decreasing)
@@ -19,7 +20,7 @@ v=zeros(n,d);       % Velocities
 % Initialize the population/solutions
 for i=1:n
     Sol(i,:)=randn(1,d);
-    Fitness(i)=Fun(Sol(i,:));
+    Fitness(i)=Fun(Sol(i,:),typ);
 end
 % Find the current best
 [fmin,I]=min(Fitness);
@@ -36,7 +37,7 @@ while (fmin>tol)
             S(i,:)=best+0.01*randn(1,d);
         end
         % Evaluate new solutions
-        Fnew=Fun(S(i,:));
+        Fnew=Fun(S(i,:),typ);
         % If the solution improves or not too loudness
         if (Fnew<=Fitness(i)) & (rand<A)
             Sol(i,:)=S(i,:);

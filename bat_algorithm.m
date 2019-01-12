@@ -3,19 +3,21 @@
 function [best,fmin,N_iter]=bat_algorithm(para)
 clear all
 % Default parameters
-if nargin<1, para=[10 0.25 0.5]; end
+if nargin<1, para=[20 0.25 0.5]; end
 n=para(1);      % Population size, typically 10 to 25
 A=para(2);      % Loudness (constant or decreasing)
 r=para(3);      % Pulse rate (constant or decreasing)
+left=-5.12;
+right=5.12;
 % This frequency range determines the scalings
 Qmin=0;     % Frequency minimum
 Qmax=2;     % Frequency maximum
 % Iteration parameters
-tol=10^(-4);        % Stop tolerance
+tol=10^(-3);        % Stop tolerance
 N_iter=0;           % Total number of function evaluations
 % Dimension of the search variables
 d=2;
-typ=1;
+typ=4;
 % Initial arrays
 Q=zeros(n,1);       % Frequency
 v=zeros(n,d);       % Velocities
@@ -30,8 +32,10 @@ best=Sol(I,:);
 %记录是否进入局部最优解
 tag=0;
 %flag>=3结束程序；表明多次收敛到的局部最优为全局最优
-flag=[];
+flag=0;
 distance=0;
+a=1;
+haha=0;
 % Start the iterations -- Bat Algorithm
 while (1)
     % Loop over all bats/solutions
@@ -47,6 +51,9 @@ while (1)
         S(i,:)=Sol(i,:)+v(i,:);
         % Pulse rate
         if rand>r
+%             if a==1
+%                  S(i,:)=best+0.001*randn(1,d);
+%             end
             S(i,:)=best+0.001*randn(1,d);
         end
         % Evaluate new solutions
@@ -70,37 +77,46 @@ while (1)
         tag=tag+1;
         if tag>300
             disp(['抖动 = ',num2str(fmin)]);
-            %             flag=flag+1;
+            flag=flag+1;
             tag=0;
             Sol(1,:)=Sol(I,:);
-            if tag/2==0
-                a=exp(i);
-            else
-                a=1;
-            end
+%             if tag/2==0
+%                 a=1
+%             else
+%                 a=0;
+%             end
 %             a=exp(a);
             I=1;
 %             best= Sol(1,:);
             for i=2:n
-                Sol(i,:)=randn(1,d);
-                
+                Sol(i,:)=left+(right-left)*randn(1,d);
+%                 Sol(i,:)=randn(1,d);
+%                 Sol(i,:)=((best+0.01*randn(1,d))+Sol(i,:))*0.5;
+%                     Sol(i,:)=best+0.001*randn(1,d);
             end
-            distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
-            if distance<tol
-                break;
-            end
+%             distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2)^0.5;
+% %             if (distance<tol) & (flag>50)
+% %                 break;
+% %             end
+%             if (distance<tol)
+%                 break;
+%             end
             continue;
         end
     end
     %循环截止条件
     
-%      if (lastbestIndex~=I)
-%          distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
-%          if distance<tol
-%              break;
-%          end
-%           
-%     end
+     if (lastbestIndex==I)
+         distance=sum((Sol(lastbestIndex,:)-Sol(I,:)).^2).^0.5;
+         if distance==0
+             haha=haha+1;
+             
+         end
+          
+     end
+    if haha>5000
+        break;
+    end
 end
 % Output/display
 disp(['Number of evaluations: ',num2str(N_iter)]);
