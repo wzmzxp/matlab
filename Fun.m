@@ -51,5 +51,16 @@ if typ==4
     
     z = -frac1/frac2;
 end
+%Eggholder Function
+%xi ¡Ê [-512, 512]
+%959.6407 (512,404.2319)
+if typ==5
+x1 = u(1);
+x2 = u(2);
 
+term1 = -(x2+47) * sin(sqrt(abs(x2+x1/2+47)));
+term2 = -x1 * sin(sqrt(abs(x1-(x2+47))));
+
+z = term1 + term2;
+end
 end
