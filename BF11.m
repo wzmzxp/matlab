@@ -40,7 +40,7 @@ record=[];%记录每次迭代后的最优质
 
 %Eggholder Function
 %xi ∈ [-512, 512]
-%959.6407 (512,404.2319)
+%-959.6407 (512,404.2319)
  lb = -512;
 ub = 512;
 typ=5  
@@ -64,7 +64,7 @@ V = zeros(batnum,d);
 A = ones(batnum,1)*A0;
 r = ones(batnum,1)*r0*0.1;
 for iter = 1 : maxgen
-    lastbestX=bestX;
+
     for i = 1 : batnum
         fi = fmin + (fmax - fmin)*rand(1,d);
         V(i,:) = V(i,:) + (X(i,:) - bestX).*fi;
@@ -94,17 +94,7 @@ for iter = 1 : maxgen
     end
     iternum=iternum+1;
     record(iternum)=bestY;
-    if lastbestX==bestX
-        tag=tag+1;
-    else
-        tag=0;
-    end
-     if tag>30
-        disp(['抖动前 = ',num2str(bestX)]);
-        for j=1:batnum
-            X(j,:)= bestX + (2*rand(1,d) - 1)*meanA;
-        end
-     end
+   
 
 end
 
