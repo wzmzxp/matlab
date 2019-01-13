@@ -5,27 +5,26 @@ if nargin < 2
     typ=1;
 end
 %Holder Table Function
+%  xi ¡Ê [-10, 10]
 if typ==1
     % -19.2085 (8.0.5502,9.66459),(-8.0.5502,9.66459),(8.0.5502,-9.66459),(-8.0.5502,-9.66459)
     x1 = u(1);
     x2 = u(2);
     fact1 = sin(x1)*cos(x2);
     fact2 = exp(abs(1 - sqrt(x1^2+x2^2)/pi));
-    y = -abs(fact1*fact2);
+    z = -abs(fact1*fact2);
 end
-% Ackley Function
-% xi ¡Ê [-32.768, 32.768] 
+% Matyas Function
+% xi ¡Ê [-10, 10] 
 %0,(0,0)
 if typ==2
     
     x1 = u(1);
     x2 = u(2);
-    term1 = 2*x1^2;
-    term2 = -1.05*x1^4;
-    term3 = x1^6 / 6;
-    term4 = x1*x2;
-    term5 = x2^2;
-    z = term1 + term2 + term3 + term4 + term5;
+    term1 = 0.26 * (x1^2 + x2^2);
+    term2 = -0.48*x1*x2;
+
+z = term1 + term2;
 
 end
 if typ==3
@@ -65,5 +64,24 @@ term1 = -(x2+47) * sin(sqrt(abs(x2+x1/2+47)));
 term2 = -x1 * sin(sqrt(abs(x1-(x2+47))));
 
 z = term1 + term2;
+
 end
+
+end
+
+
+function z=G(id)
+    f=@(x) -(x(2)+47) * sin(sqrt(abs(x(2)+x1/2+47)))-x(1) * sin(sqrt(abs(x(1)-(x(2)+47))))
+    
+end
+function [z,str]=dif(f,d)
+    syms u1 u2 u3 u4 u5 u6                               
+    str=[u1,u2,u3,u4,u5,u6];
+    y = f(str(1:d));
+    syms z1 
+    z=[z1]
+    for i=1:d
+        z(i)=diff(y,str(i))
+        
+    end
 end

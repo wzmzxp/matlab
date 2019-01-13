@@ -8,12 +8,13 @@ A0 = 0.5;
 r0 = 0.25;
 fmin = 0.1;
 fmax = 1;
-maxgen = 500;
+maxgen = 700;
 alfa = 0.7; %音量衰减系数
 gama = 0.5; %速率增强系数
 d=2;%函数维度
 iternum=0;%种群迭代次数
 record=[];%记录每次迭代后的最优质
+
 % -19.2085 (8.0.5502,9.66459),(-8.0.5502,9.66459),(8.0.5502,-9.66459),(-8.0.5502,-9.66459)
 % lb = -10;
 % ub = 10;
@@ -44,6 +45,7 @@ record=[];%记录每次迭代后的最优质
  lb = -512;
 ub = 512;
 typ=5  
+[z,str,f]=get_gradient(typ);
 % 种群初始化
 X = lb + (ub - lb)*rand(batnum,d);
 Y=zeros(batnum,1);
@@ -99,11 +101,24 @@ for iter = 1 : maxgen
     else
         tag=0;
     end
-     if tag>30
+     if tag>25
         disp(['抖动前 = ',num2str(bestX)]);
-        for j=1:batnum
-            X(j,:)= bestX + (2*rand(1,d) - 1)*meanA;
-        end
+        %梯度下降
+        
+%         bestX=GD1(f,z,str,d,bestX);
+%         ul1=bestX-10;
+%         ub1=bestX+10;
+%           for j=1:batnum/2
+%              X(j,:) = lb + (ul1 - lb).*rand(1,d);
+%           end
+%             for j=(batnum/2+1):batnum
+%                 X(j,:) = ub1 + (ub - ub1).*rand(1,d);
+%             end
+%         
+%         for j=1:batnum
+%             
+%             X(j,:)= bestX + (2*rand(1,d) - 1)*meanA;
+%         end
      end
 
 end
