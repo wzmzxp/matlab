@@ -2,7 +2,7 @@ function [best,fmin,N_iter]=bat_algorithm(para)
 % Default parameters
 clear all
 if nargin<1, para=[10 0.25 0.5]; end
-typ=5;
+typ=4;
 n=para(1);      % Population size, typically 10 to 25
 A=para(2);      % Loudness (constant or decreasing)
 r=para(3);      % Pulse rate (constant or decreasing)
